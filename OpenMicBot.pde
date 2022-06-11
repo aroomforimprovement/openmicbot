@@ -1,9 +1,4 @@
 import processing.sound.*;
-import processing.serial.*;
-import processing.io.*;
-
-Serial myPort;
-String ardVal;
 
 String[] intro;
 String introWelcome;
@@ -23,8 +18,6 @@ int bands = 512;
 float[] spectrum = new float[bands];
 
 void setup () {
- //size(displayWidth, displayHeight); 
- //size(600, 600);
  fullScreen();
  textSize(128);
  fill(255);
@@ -38,16 +31,6 @@ void setup () {
  intro = data.intro;
  introWelcome = data.introWelcome;
  introSignUp = data.introSignUp;
- if(Serial.list() != null && Serial.list().length > 0){
-   String portName = Serial.list()[0];
-   try{
-     myPort = new Serial(this, portName, 9600);
-   }catch(Exception e){
-     e.printStackTrace();
-   }
-   //  
- }
- //GPIO.pinMode(4, GPIO.OUTPUT);
  
  background(0);
 }
@@ -238,24 +221,15 @@ void keyReleased() {
 }
 
 void playSound(float amp) {
-  if(myPort != null){
-    myPort.write('1'); 
-  }
   sine.amp(amp);
   sine.play();
-  //GPIO.digitalWrite(4, GPIO.HIGH);
 }
 
 void stopSound(){
-  if(myPort != null){
-    myPort.write('0');
-  }
   sine.amp(0);
   sine.stop();
-  //GPIO.digitalWrite(4, GPIO.LOW);
 }
 
 void exit() {
-   //GPIO.releasePin(4);
-   super.exit();
+  super.exit();
 }
