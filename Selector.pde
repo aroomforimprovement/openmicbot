@@ -25,7 +25,7 @@ public class Selector {
       int index = int(random(peeps.size()));
       int secret = peeps.get(index);
       int decoy = peeps.get(int(random(peeps.size())));
-      sine.play();
+      playSound(0.1f);
       while(peeps.get(int(random(peeps.size()))) != decoy){
         while(millis() < timer + delay){
            int num = peeps.get(int(random(peeps.size())));
@@ -33,7 +33,7 @@ public class Selector {
         }
         timer = millis();
       }
-      sine.stop();
+      stopSound();
       selection = secret;
       peeps.remove(index);
       generated = true;

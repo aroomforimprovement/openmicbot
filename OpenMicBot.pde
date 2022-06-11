@@ -1,5 +1,9 @@
 import processing.sound.*;
+import processing.serial.*;
+import processing.io.*;
 
+Serial myPort;
+String ardVal;
 
 String[] intro;
 String introWelcome;
@@ -34,6 +38,17 @@ void setup () {
  intro = data.intro;
  introWelcome = data.introWelcome;
  introSignUp = data.introSignUp;
+ if(Serial.list() != null && Serial.list().length > 0){
+   String portName = Serial.list()[0];
+   try{
+     myPort = new Serial(this, portName, 9600);
+   }catch(Exception e){
+     e.printStackTrace();
+   }
+   //  
+ }
+ //GPIO.pinMode(4, GPIO.OUTPUT);
+ 
  background(0);
 }
 
@@ -41,7 +56,7 @@ void draw () {
   int bg = 0;
   int c = 255;
   background(bg);
-  
+  noCursor();
   switch(State.screen){
     case State.TIMER:{
       int mins = 4 - timer.minutes();
@@ -59,8 +74,7 @@ void draw () {
       }
       if(mins == 0 && secs == 1){
         timer.stopTimer();
-        sine.amp(1);
-        sine.play();
+        playSound(0.8);
       }
       background(bg);
       stroke(c);
@@ -154,10 +168,9 @@ void setSelection(){
 void keyPressed () {
   if(key == CODED){
     if(keyCode == UP){
-      sine.amp(1);
-      sine.play();
+      playSound(0.8);
     }else if(keyCode == DOWN){
-      sine.stop();
+      stopSound();
     }else if(keyCode == LEFT){
       if(State.screen == State.INIT && selector.numPeeps > 0){
          selector.numPeeps -= 1; 
@@ -222,4 +235,27 @@ void keyReleased() {
          newPlayer = "";
        }
    }
+}
+
+void playSound(float amp) {
+  if(myPort != null){
+    myPort.write('1'); 
+  }
+  sine.amp(amp);
+  sine.play();
+  //GPIO.digitalWrite(4, GPIO.HIGH);
+}
+
+void stopSound(){
+  if(myPort != null){
+    myPort.write('0');
+  }
+  sine.amp(0);
+  sine.stop();
+  //GPIO.digitalWrite(4, GPIO.LOW);
+}
+
+void exit() {
+   //GPIO.releasePin(4);
+   super.exit();
 }
