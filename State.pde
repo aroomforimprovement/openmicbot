@@ -6,6 +6,7 @@ public static class State {
     public static final int INIT = 2;
     public static final int SELECTOR = 3;
     public static final int BREAK = 4;
-    public static int textSize = 128;
+    public static int textSize = 64;
+    public static String performer = "";
     
 }

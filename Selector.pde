@@ -6,7 +6,7 @@ public class Selector {
    
    void initSelector(){
       peeps = new ArrayList<Integer>();
-      for(int i = 0; i < numPeeps; i++){
+      for(int i = 1; i < numPeeps+1; i++){
         peeps.add(i);
       }
    }
